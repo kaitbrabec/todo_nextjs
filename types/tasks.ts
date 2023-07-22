@@ -1,4 +1,4 @@
 export interface ITask {
-    id: number | bigint,
+    id: string,
     text: string
 }

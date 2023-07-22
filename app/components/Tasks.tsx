@@ -27,14 +27,14 @@ const Tasks: React.FC<TaskProps> = ({ task }) => {
     router.refresh();
   };
 
-  const handleDeleteTask = async (id: number) => {
+  const handleDeleteTask = async (id: string) => {
     await deleteTodo(id);
     setOpenModalDeleted(false);
     router.refresh();
   }
 
   return (
-    <tr key={String(task.id)}>
+    <tr key={task.id}>
     <td className="w-full">{task.text}</td>
     <td className="flex gap-5">
       <FiEdit onClick={() => setOpenModalEdit(true)} cursor="pointer" className="text-blue-500" size={25} />
@@ -57,7 +57,7 @@ const Tasks: React.FC<TaskProps> = ({ task }) => {
       <Modal modalOpen={openModalDeleted} setModalOpen={setOpenModalDeleted}> 
        <h3 className="text-lg">Are you sure you want to delete?</h3>
        <div className="modal-action">
-        <button onClick={() => handleDeleteTask(task.id as number)} className="btn">Yes</button>
+        <button onClick={() => handleDeleteTask(task.id)} className="btn">Yes</button>
        </div>
       </Modal>
     </td>
