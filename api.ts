@@ -28,7 +28,8 @@
 
 import { ITask } from "./types/tasks";
 
-const baseURL = 'http://localhost:3001';
+const baseURL = process.env.BASE_URL || 'http://localhost:3001';
+
 
 export const getAllTodos = async (): Promise<ITask[]> => {
     const res = await fetch(`${baseURL}/tasks`, { cache: 'no-store' });
