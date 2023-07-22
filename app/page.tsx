@@ -3,6 +3,7 @@ import AddTask from "./components/AddTask";
 import TodoList from "./components/TodoList";
 
 
+
 export default async function Home() {
   const tasks = await getAllTodos();
   console.log(tasks)
