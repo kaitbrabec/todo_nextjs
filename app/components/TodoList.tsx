@@ -5,7 +5,7 @@ interface TodoListProps {
   tasks: ITask[]
 }
 
-const TodoList: React.FC<TodoListProps> = ({ tasks }) => {
+const TodoList: React.FC<TodoListProps> = ({ tasks = []}) => {
   return (
     <div className="overflow-x-auto">
   <table className="table">

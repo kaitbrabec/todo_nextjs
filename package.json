@@ -10,13 +10,16 @@
     "json-server": "json-server --watch data/todos.json --port 3001"
   },
   "dependencies": {
-    "@types/node": "20.4.1",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
     "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
     "better-sqlite3": "^8.5.0",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
+    "firebase": "^10.1.0",
+    "firebase-admin": "^11.10.1",
+    "fs": "^0.0.1-security",
     "next": "13.4.9",
     "postcss": "8.4.25",
     "react": "18.2.0",
@@ -28,8 +31,10 @@
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.4",
+    "@types/node": "^20.4.4",
     "@types/uuid": "^9.0.2",
     "daisyui": "^3.2.1",
-    "json-server": "^0.17.3"
+    "json-server": "^0.17.3",
+    "webpack-cli": "^5.1.4"
   }
 }
