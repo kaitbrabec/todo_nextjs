@@ -2,8 +2,8 @@ import { ITask } from "./types/tasks";
 
 
 
+
 // const baseURL = 'http://localhost:3001';
-const baseURL = 'https://todoapp-fac75-default-rtdb.europe-west1.firebasedatabase.app/';
 
 
 // export const getAllTodos = async (): Promise<ITask[]> => {
@@ -18,10 +18,11 @@ const baseURL = 'https://todoapp-fac75-default-rtdb.europe-west1.firebasedatabas
 //   };
 
 
+const baseURL = "https://todoapp-fac75-default-rtdb.europe-west1.firebasedatabase.app/";
 
 
 export const getAllTodos = async (): Promise<ITask[]> => {
-    const res = await fetch(`${baseURL}/todos`);
+    const res = await fetch(`${baseURL}todos.json`);
     const todos = await res.json();
     return todos;
 }
@@ -41,7 +42,7 @@ export const getAllTodos = async (): Promise<ITask[]> => {
 // }
 
 export const addTodo = async (todo: ITask): Promise<ITask> =>  {
-    const res = await fetch(`${baseURL}/todos`, {
+    const res = await fetch(`${baseURL}todos.json`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
