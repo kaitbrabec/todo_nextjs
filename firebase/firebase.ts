@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase} from "firebase/database";
 
 
 const firebaseConfig = {
@@ -19,4 +19,3 @@ console.log("We initialized Firebase");
 
 export const db = getDatabase(app);
 
-console.log("We got the database");
