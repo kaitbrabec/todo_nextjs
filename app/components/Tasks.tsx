@@ -3,7 +3,6 @@ import { ITask } from "@/types/tasks";
 import { FormEventHandler, useState } from "react";
 import { FiEdit, FiTrash2} from "react-icons/fi";
 import Modal from "./Modal";
-import { useRouter } from "next/navigation";
 import { deleteTodo, editTodo } from "@/api";
 
 
@@ -12,7 +11,7 @@ interface TaskProps {
 }
 
 const Tasks: React.FC<TaskProps> = ({ task }) => {
-  const router = useRouter();
+  
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
   const [openModalDeleted, setOpenModalDeleted] = useState<boolean>(false);
   const [taskToEdit, setTaskToEdit] = useState<string>(task.text);
@@ -24,17 +23,17 @@ const Tasks: React.FC<TaskProps> = ({ task }) => {
     })
     
     setOpenModalEdit(false);
-    router.refresh();
+  
   };
 
   const handleDeleteTask = async (id: string) => {
     await deleteTodo(id);
     setOpenModalDeleted(false);
-    router.refresh();
+  
   }
 
   return (
-    <tr key={task.id}>
+    <tr key={`task-${task.id}`}>
     <td className="w-full">{task.text}</td>
     <td className="flex gap-5">
       <FiEdit onClick={() => setOpenModalEdit(true)} cursor="pointer" className="text-blue-500" size={25} />

@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const AddTask = () => {
   
-  const router = useRouter();
+  
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [newTaskValue, setNewTaskValue] = useState('');
 
@@ -22,7 +22,6 @@ const AddTask = () => {
     console.log(newTaskValue);
     setNewTaskValue("");
     setModalOpen(false);
-    router.refresh();
   }
   
   return (

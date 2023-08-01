@@ -26,6 +26,8 @@ const TodoList: React.FC<TodoListProps> = ({ tasks }) => {
       off(todosRef); // Remove the listener when the component unmounts
     };
   }, []);
+
+  
   const initialTasks = tasks ? Object.values(tasks) : [];
   const mergedTasks = initialTasks.concat(realtimeTasks);
   return (
@@ -33,7 +35,7 @@ const TodoList: React.FC<TodoListProps> = ({ tasks }) => {
   <table className="table">
     {/* head */}
     <thead>
-      <tr>
+      <tr >
       
         <th>Tasks</th>
       
@@ -41,10 +43,13 @@ const TodoList: React.FC<TodoListProps> = ({ tasks }) => {
       </tr>
     </thead>
     <tbody>
+      {/* {mergedTasks.map((task) => (
+      <Tasks key={task.id} task={task} />))} */}
+      {/* Assign unique keys to each Tasks component */}     
       {mergedTasks.map((task) => (
-      <Tasks key={task.id} task={task} />))}
+            <Tasks key={`task-${task.id}`} task={task} />
       
-
+            ))}
     </tbody>
   </table>
 </div>
