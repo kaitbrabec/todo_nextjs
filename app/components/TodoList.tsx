@@ -46,8 +46,8 @@ const TodoList: React.FC<TodoListProps> = ({ tasks }) => {
       {/* {mergedTasks.map((task) => (
       <Tasks key={task.id} task={task} />))} */}
       {/* Assign unique keys to each Tasks component */}     
-      {mergedTasks.map((task) => (
-            <Tasks key={`task-${task.id}`} task={task} />
+      {mergedTasks.map((task, index) => (
+            <Tasks key={`task-${task.id}-${index}`} task={task} />
       
             ))}
     </tbody>

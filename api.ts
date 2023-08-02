@@ -1,6 +1,7 @@
 import { ITask } from "./types/tasks";
 import { ref, set } from "firebase/database";
 import { db } from "@/firebase/firebase";
+import { NextApiRequest, NextApiResponse } from "next";
 
 
 
@@ -8,43 +9,17 @@ import { db } from "@/firebase/firebase";
 // const baseURL = 'http://localhost:3001';
 
 
-// export const getAllTodos = async (): Promise<ITask[]> => {
-//     try {
-//       const response = await axios.get<ITask[]>(`${baseURL}/todos.json`);
-//       return response.data;
-//     } catch (error) {
-//       // Handle any errors that occurred during the fetch or JSON parsing
-//       console.error('Error fetching todos:', error);
-//       throw error; // Rethrow the error to inform the caller about the failure
-//     }
-//   };
-
 
 const baseURL = "https://todoapp-fac75-default-rtdb.europe-west1.firebasedatabase.app/";
 
+
+
+
 export const getAllTodos = async (): Promise<ITask[]> => {
-    try {
-      const response = await fetch(`${baseURL}todos.json`, {
-        method: 'GET',
-        headers: {
-          'Cache-Control': 'no-cache',
-        },
-      });
-      const data = await response.json();
-      // Convert data object to an array of tasks
-      const tasks: ITask[] = data ? Object.values(data) : [];
-      return tasks;
-    } catch (error) {
-      // Handle error
-      console.error('Error fetching todos:', error);
-      throw error;
-    }
-  };
-// export const getAllTodos = async (): Promise<ITask[]> => {
-//     const res = await fetch(`${baseURL}todos.json`);
-//     const todos = await res.json();
-//     return todos;
-// }
+    const res = await fetch(`${baseURL}todos.json`);
+    const todos = await res.json();
+    return todos;
+}
 
 // const fetch = require("node-fetch");
 
@@ -123,12 +98,14 @@ export const editTodo = async (todo: ITask): Promise<ITask> => {
 //     return task
 // }
 
-export const deleteTodo = async (id: string): Promise<void> =>  {
-    await fetch(`${baseURL}/todos.json`, {
-        method: 'DELETE'
-    })
-}
-
+export const deleteTodo = async (id: string): Promise<void> => {
+    await fetch(`${baseURL}/todos/${id}.json`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  };
 // export const deleteTodo = async (id: string): Promise<void> =>  {
    
 // }

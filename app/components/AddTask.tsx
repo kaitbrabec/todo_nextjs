@@ -20,6 +20,7 @@ const AddTask = () => {
       text: newTaskValue
     })
     console.log(newTaskValue);
+    console.log("submitted");
     setNewTaskValue("");
     setModalOpen(false);
   }
