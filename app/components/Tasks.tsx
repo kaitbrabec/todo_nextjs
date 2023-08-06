@@ -1,9 +1,9 @@
 "use client";
 import { ITask } from "@/types/tasks";
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useState, useEffect } from "react";
 import { FiEdit, FiTrash2} from "react-icons/fi";
 import Modal from "./Modal";
-import { deleteTodo, editTodo } from "@/api";
+import { editTodo, deleteTodo } from "@/api";
 
 
 interface TaskProps {
@@ -15,6 +15,9 @@ const Tasks: React.FC<TaskProps> = ({ task }) => {
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
   const [openModalDeleted, setOpenModalDeleted] = useState<boolean>(false);
   const [taskToEdit, setTaskToEdit] = useState<string>(task.text);
+  useEffect(() => {
+    setTaskToEdit(task.text); // Update the taskToEdit state when the task prop changes
+  }, [task]);
   const handleSubmitEditTodo: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     await editTodo({
@@ -33,7 +36,7 @@ const Tasks: React.FC<TaskProps> = ({ task }) => {
   }
 
   return (
-    <tr key={`task-${task.id}`}>
+    <tr key={task.id}>
     <td className="w-full">{task.text}</td>
     <td className="flex gap-5">
       <FiEdit onClick={() => setOpenModalEdit(true)} cursor="pointer" className="text-blue-500" size={25} />
@@ -65,3 +68,5 @@ const Tasks: React.FC<TaskProps> = ({ task }) => {
 }
 
 export default Tasks
+
+console.log("Tasks:", Tasks);

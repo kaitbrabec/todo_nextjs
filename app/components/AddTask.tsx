@@ -3,7 +3,6 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import Modal from './Modal';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import { addTodo } from '@/api';
-import { useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -20,7 +19,7 @@ const AddTask = () => {
       text: newTaskValue
     })
     console.log(newTaskValue);
-    console.log("submitted");
+    
     setNewTaskValue("");
     setModalOpen(false);
   }

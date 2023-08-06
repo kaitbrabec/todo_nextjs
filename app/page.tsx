@@ -8,7 +8,6 @@ import { ITask } from "@/types/tasks";
 export default async function Home() {
   const tasks = await getAllTodos();
   console.log("Tasks:", tasks);
-  console.log("hello")
  
   return (
     <main className="max-w-4xl mx-auto mt-4">

@@ -9,7 +9,18 @@ interface TodoListProps {
   tasks: ITask[]
 }
 
-const TodoList: React.FC<TodoListProps> = ({ tasks }) => {
+// const mergeTasks = (initialTasks: ITask[] = [], realtimeTasks: ITask[]): ITask[] => {
+//   console.log("initialTasks:", initialTasks);
+//   console.log("realtimeTasks:", realtimeTasks);
+  
+  
+//   const taskArray = Object.values(initialTasks);
+//   const taskIds = new Set(taskArray.map((task) => task.id));
+//   const filteredRealtimeTasks = realtimeTasks.filter((task) => !taskIds.has(task.id));
+//   return [...taskArray, ...filteredRealtimeTasks];
+// };
+
+const TodoList: React.FC<TodoListProps> = ({ tasks: taskArray }) => {
   // const taskArray = Object.values(tasks);
   const [realtimeTasks, setRealtimeTasks] = useState<ITask[]>([]);
   useEffect(() => {
@@ -27,9 +38,10 @@ const TodoList: React.FC<TodoListProps> = ({ tasks }) => {
     };
   }, []);
 
-  
-  const initialTasks = tasks ? Object.values(tasks) : [];
-  const mergedTasks = initialTasks.concat(realtimeTasks);
+  // const mergedTasks: ITask[] = mergeTasks(taskArray, realtimeTasks);
+  // console.log("mergedTasks:", mergedTasks);
+  // const initialTasks = tasks ? Object.values(tasks) : [];
+  // const mergedTasks = initialTasks.concat(realtimeTasks);
   return (
     <div className="overflow-x-auto">
   <table className="table">
@@ -46,10 +58,11 @@ const TodoList: React.FC<TodoListProps> = ({ tasks }) => {
       {/* {mergedTasks.map((task) => (
       <Tasks key={task.id} task={task} />))} */}
       {/* Assign unique keys to each Tasks component */}     
-      {mergedTasks.map((task, index) => (
-            <Tasks key={`task-${task.id}-${index}`} task={task} />
+      {realtimeTasks.map((task) => (
+            <Tasks key={task.id} task={task} />
       
             ))}
+            
     </tbody>
   </table>
 </div>
