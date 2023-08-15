@@ -4,6 +4,7 @@ import Tasks from "./Tasks"
 import { useEffect, useState } from "react";
 import { db } from "@/firebase/firebase";
 import { ref, onValue, off } from "firebase/database";
+import { listenToTasks } from "@/api";
 
 interface TodoListProps {
   tasks: ITask[]
@@ -23,34 +24,45 @@ interface TodoListProps {
 const TodoList: React.FC<TodoListProps> = ({ tasks: taskArray }) => {
   // const taskArray = Object.values(tasks);
   const [realtimeTasks, setRealtimeTasks] = useState<ITask[]>([]);
-  useEffect(() => {
-    const todosRef = ref(db, 'todos');
+    console.log("realtimeTasks:", realtimeTasks);
+    useEffect(() => {
+      // Set up the event listener and get the unsubscribe function
+      const unsubscribe = listenToTasks((tasksList) => {
+        setRealtimeTasks(tasksList);
+      });
+  
+      // Clean up the event listener when the component unmounts
+      return () => {
+        unsubscribe();
+      };
+    }, []);
+  //   const todosRef = ref(db, 'todos');
 
-    const unsubscribe = onValue(todosRef, (snapshot) => {
-      const todosData = snapshot.val();
-      const todosList: ITask[] = todosData ? Object.values(todosData) : [];
-      setRealtimeTasks(todosList);
-    });
+  //   const unsubscribe = onValue(todosRef, (snapshot) => {
+  //     const todosData = snapshot.val();
+  //     const todosList: ITask[] = todosData ? Object.values(todosData) : [];
+  //     setRealtimeTasks(todosList);
+  //   });
 
-    return () => {
-      const todosRef = ref(db, 'todos');
-      off(todosRef); // Remove the listener when the component unmounts
-    };
-  }, []);
+  //   return () => {
+  //     const todosRef = ref(db, 'todos');
+  //     off(todosRef); // Remove the listener when the component unmounts
+  //   };
+  // }, []);
 
   // const mergedTasks: ITask[] = mergeTasks(taskArray, realtimeTasks);
   // console.log("mergedTasks:", mergedTasks);
   // const initialTasks = tasks ? Object.values(tasks) : [];
   // const mergedTasks = initialTasks.concat(realtimeTasks);
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow--auto">
   <table className="table">
     {/* head */}
     <thead>
       <tr >
-      
         <th>Tasks</th>
-      
+        <th>Category</th>
+        <th>Status</th>
         <th>Actions</th>
       </tr>
     </thead>

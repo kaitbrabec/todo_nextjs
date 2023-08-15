@@ -1,14 +1,11 @@
 import { ITask } from "./types/tasks";
-import { ref, set } from "firebase/database";
+import { ref, set, onValue, off } from "firebase/database";
 import { db } from "@/firebase/firebase";
 import { NextApiRequest, NextApiResponse } from "next";
 import { cache } from "react";
 import axios from "axios";
 
 
-
-
-// const baseURL = 'http://localhost:3001';
 
 
 
@@ -26,25 +23,21 @@ export const getAllTodos = async (): Promise<ITask[]> => {
     }
   };
 
-// export const getAllTodos = async (): Promise<ITask[]> => {
-//     const res = await fetch(`${baseURL}.json`, {cache: "no-cache"});
-//     const todos = await res.json();
-//     return todos;
-// }
+
 
 export const addTodo = async (todo: ITask): Promise<ITask> => {
     try {
-      const { id, text } = todo;
+      const { id, text, status } = todo;
       await fetch(`${baseURL}todos/${id}.json`, {
-        method: 'PUT', // Use PUT method to set data at a specific path with custom key
+        method: 'PUT', 
         headers: {
           'Content-Type': 'application/json',
           'cache-control': 'no-cache',
         },
-        body: JSON.stringify({ id, text }) // Send both 'id' and 'text' fields
+        body: JSON.stringify({ id, text, status }) 
       });
   
-      return todo; // Return the added todo item
+      return todo; 
     } catch (error) {
       console.error('Error adding todo:', error);
       throw error;
@@ -52,83 +45,32 @@ export const addTodo = async (todo: ITask): Promise<ITask> => {
   };
   
 
-// export const addTodo = async (todo: ITask): Promise<ITask> =>  {
-//     const res = await fetch(`${baseURL}todos.json`,  {
-//         method: 'POST',
-//         headers: {
-//             'cache-control': 'no-cache',
-//         },
-//         body: JSON.stringify(todo)
-//     })
-//     const newTodo = await res.json();
-//     console.log("newTodo", newTodo);
-//     return newTodo;
-// }
-
-// export const addTodo = async (todo: ITask): Promise<ITask> =>  {
-//     const task: ITask = {
-//         id: "1",
-//         text: "Finish the TypeScript tutorial",
-//     };
-//     return task
-// }
-
-// export const editTodo = async (todo: ITask): Promise<ITask> => {
-//     try {
-//       const { text } = todo;
-//       const res = await fetch(`${baseURL}todos/${id}.json`, {
-//         method: 'PATCH', // Use PATCH method to update specific fields
-//         headers: {
-//           'Content-Type': 'application/json',
-//           'cache-control': 'no-cache',
-//         },
-//         body: JSON.stringify({ text }) // Send only the 'text' field to be updated
-//       });
-  
-//       if (!res.ok) {
-//         throw new Error('Failed to update todo.');
-//       }
-  
-//       const updatedTodo = await res.json();
-//       return updatedTodo;
-//     } catch (error) {
-//       console.error('Error  todo:', error);
-//       throw error;
-//     }
-//   };
 
 export const editTodo = async (todo: ITask): Promise<ITask> => {
     try {
-      const { id, text } = todo;
+      const { id, text, status } = todo;
   
-      // Fetch the existing todo item based on the custom ID
+    
       const response = await fetch(`${baseURL}todos/${id}.json`);
       const existingTodo = await response.json();
   
-      // Update the 'text' field of the specific todo item
+     
       await fetch(`${baseURL}todos/${id}/text.json`, {
-        method: 'PUT', // Use PUT method to update the 'text' field
+        method: 'PUT', 
         headers: {
           'Content-Type': 'application/json',
           'cache-control': 'no-cache',
         },
-        body: JSON.stringify(text) // Send the new text to update the todo item
+        body: JSON.stringify(text) 
       });
   
-      return { id, text }; // Return the updated todo item
+      return { id, text, status }; 
     } catch (error) {
       console.error('Error updating todo:', error);
       throw error;
     }
   };
 
-// export const editTodo = async (todo: ITask): Promise<ITask> =>  {
-//     const task: ITask = {
-//         id: "1",
-//         text: "Finish the TypeScript tutorial",
-//     };
-//     return task
-// }
 
 export const deleteTodo = async (id: string): Promise<void> => {
     await fetch(`${baseURL}/todos/${id}.json`, {
@@ -139,8 +81,39 @@ export const deleteTodo = async (id: string): Promise<void> => {
       },
     });
   };
-// export const deleteTodo = async (id: string): Promise<void> =>  {
-   
-// }
+
+  export const listenToTasks = (callback: (tasks: ITask[]) => void) => {
+    const todosRef = ref(db, 'todos');
+  
+    const onDataUpdate = (snapshot: any) => {
+      const todosData = snapshot.val();
+      const todosList: ITask[] = todosData ? Object.values(todosData) : [];
+      callback(todosList);
+    };
+  
+
+    const unsubscribe = onValue(todosRef, onDataUpdate);
+  
+
+    return () => {
+      off(todosRef, 'value', onDataUpdate);
+    };
+  };
+
+  export const updateTaskStatus = async (id: string, newStatus: string): Promise<void> => {
+    try {
+      await fetch(`${baseURL}todos/${id}/status.json`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+        body: JSON.stringify(newStatus),
+      });
+    } catch (error) {
+      console.error('Error updating task status:', error);
+      throw error;
+    }
+  };
 
 

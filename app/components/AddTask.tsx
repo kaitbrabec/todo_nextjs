@@ -16,7 +16,8 @@ const AddTask = () => {
     e.preventDefault();
     await addTodo({
       id: uuidv4(),
-      text: newTaskValue
+      text: newTaskValue,
+      status: "New"
     })
     console.log(newTaskValue);
     

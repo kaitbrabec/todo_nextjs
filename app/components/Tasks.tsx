@@ -4,6 +4,7 @@ import { FormEventHandler, useState, useEffect } from "react";
 import { FiEdit, FiTrash2} from "react-icons/fi";
 import Modal from "./Modal";
 import { editTodo, deleteTodo } from "@/api";
+import MyCombobox from "./ComboBox";
 
 
 interface TaskProps {
@@ -22,7 +23,8 @@ const Tasks: React.FC<TaskProps> = ({ task }) => {
     e.preventDefault();
     await editTodo({
       id: task.id,
-      text: taskToEdit
+      text: taskToEdit,
+      status: task.status
     })
     
     setOpenModalEdit(false);
@@ -38,6 +40,8 @@ const Tasks: React.FC<TaskProps> = ({ task }) => {
   return (
     <tr key={task.id}>
     <td className="w-full">{task.text}</td>
+    <td></td>
+    <td><MyCombobox taskId={task.id} initialSelectedStatus={task.status} /></td>
     <td className="flex gap-5">
       <FiEdit onClick={() => setOpenModalEdit(true)} cursor="pointer" className="text-blue-500" size={25} />
       <Modal modalOpen={openModalEdit} setModalOpen={setOpenModalEdit}> 
